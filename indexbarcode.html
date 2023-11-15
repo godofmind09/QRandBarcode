@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/jsbarcode/3.6.0/JsBarcode.all.min.js"
+    ></script>
+    <script type="text/javascript" src="customBarcodeGenerate.js"></script>
+    <link rel="stylesheet" href="styleebarcode.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="row" id="a">
+      <div class="">
+        <form method="post">
+          <div class="row">
+            <div class="">
+              <div class="form-group">
+                <label>Fill code</label>
+                <input
+                  type="text"
+                  name="barcodeValue"
+                  id="barcodeValue"
+                  class="form-control"
+                  value="123456"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="">
+              <div class="form-group">
+                <label>Barcode Types</label>
+                <select
+                  name="barcodeType"
+                  id="barcodeType"
+                  class="form-control"
+                >
+                  <option value="code128">Code 128</option>
+                  <option value="codabar">Codabar</option>
+                  <option value="code39">Code 39</option>
+                  <option value="msi">MSI</option>
+                  <option value="pharmacode">Pharmacode</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="">
+              <div class="form-group">
+                <label>Show Text:</label>
+                <select
+                  name="showText"
+                  id="showText"
+                  class="form-control"
+                  required
+                >
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="ba">
+              <input
+                type="button"
+                id="generateBarcode"
+                name="generateBarcode"
+                value="Generate"
+              />
+            </div>
+          </div>
+          <div class="b">
+            <svg id="barcode"></svg>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+  </body>
+</html>

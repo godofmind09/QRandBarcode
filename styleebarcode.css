@@ -1,0 +1,106 @@
+* {
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background-color: white;
+  }
+  
+  #top{
+    display: flex;
+    text-decoration: center;
+  } 
+  #a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid;
+    border-radius: 10px;
+    height: 640px;
+    width: 450px;
+    margin: 4% auto;
+    background-color: white;
+    padding: 30px;
+  }
+  #work_banner {
+    background-image: url('assets/img/banner-bg-03.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+
+  
+  .b {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-top: 5px;
+    border: 1px solid #999;
+    border-radius: 5px;
+  }
+  
+  label {
+    color: #474744;
+    font-weight: 550;
+    font-size: 20px;
+  }
+  
+  #generateBarcode {
+    border: 1px;
+    border-radius: 5px;
+    font-weight: 400;
+    width: 100%;
+    height: 40px;
+    background-color: rgb(209, 217, 250);
+  }
+  
+  .ba {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    box-sizing: border-box;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: none;
+    background-color: #f8f8f8;
+  }
+  
+  select.form-control {
+    background-color: #f8f8f8;
+    font-size: 18px;
+  }
+  
+  input[type="text"]:focus,
+  select:focus {
+    border-color: rgb(209, 217, 250);
+    box-shadow: none;
+    outline: none;
+  }
+  
+  option {
+    background-color: white;
+    color: #555;
+    font-size: 18px;
+  }
+  #downloadBarcode {
+    padding: 10px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    background-color: white;
+    color: #474744;
+    margin-left: 10px;
+    font-weight: 550;
+    font-size: 18px;
+  }
+    
