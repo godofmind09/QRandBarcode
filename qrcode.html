@@ -93,11 +93,12 @@
           <input type="text" placeholder="Enter text or url" />
           <button>Generate QR Code</button>
         </div>
+        <p class="qr-error" role="alert"></p>
         <div class="qr-code">
-          <img src="" alt="qr-code" />
+          <img alt="qr-code" />
         </div>
         <div class="form">
-            <button class="download-btn">Download QR Code</button>
+            <button class="download-btn" disabled>Download QR Code</button>
           </div>
       </div>
     </div>
@@ -195,10 +196,6 @@
     <!-- End Footer -->
 
     <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/fslightbox.js"></script>
-    <script>
-        fsLightboxInstances['gallery'].props.loadOnlyCurrentSource = true;
-    </script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/isotope.pkgd.js"></script>
     <script>
@@ -222,7 +219,7 @@
     </script>
     <script src="assets/js/templatemo.js"></script>
     <script src="assets/js/custom.js"></script>
-    <script src="app.js "></script>
+    <script src="app.js"></script>
 
 </body>
 

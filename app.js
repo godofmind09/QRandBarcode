@@ -1,42 +1,46 @@
-const wrapper = document.querySelector(".wrapper"),
-qrInput = wrapper.querySelector(".form input"),
-generateBtn = wrapper.querySelector(".form button"),
-qrColor = wrapper.querySelector(".form .color-picker"),
-qrImg = wrapper.querySelector(".qr-code img");
+const wrapper = document.querySelector(".wrapper");
+const input = wrapper.querySelector(".form input");
+const generate = wrapper.querySelector(".form button");
+const image = wrapper.querySelector(".qr-code img");
+const download = wrapper.querySelector(".download-btn");
+const error = wrapper.querySelector(".qr-error");
+let imageUrl;
 
-generateBtn.addEventListener("click",()=>{
-    let qrValue = qrInput.value;
-    if(!qrValue) return;
-    generateBtn.innerText = "Generating QR Code...";
-    qrImg.src=`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrValue}`;
-    qrImg.addEventListener("load",()=>{
-        wrapper.classList.add("active");
-        generateBtn.innerText = "Generate QR Code";
-    })
-    
+generate.addEventListener("click", async () => {
+  if (!input.value.trim()) return;
+
+  generate.disabled = true;
+  download.disabled = true;
+  generate.textContent = "Generating QR Code...";
+  error.textContent = "";
+  wrapper.classList.remove("active");
+  if (imageUrl) URL.revokeObjectURL(imageUrl);
+  imageUrl = undefined;
+  image.removeAttribute("src");
+
+  try {
+    const url = new URL("https://api.qrserver.com/v1/create-qr-code/");
+    url.search = new URLSearchParams({ size: "150x150", data: input.value });
+    const response = await fetch(url);
+    if (!response.ok || !response.headers.get("Content-Type")?.startsWith("image/")) {
+      throw new Error("Unexpected QR code response");
+    }
+    imageUrl = URL.createObjectURL(await response.blob());
+    image.src = imageUrl;
+    wrapper.classList.add("active");
+    download.disabled = false;
+  } catch {
+    error.textContent = "Could not generate the QR code. Please try again.";
+  } finally {
+    generate.disabled = false;
+    generate.textContent = "Generate QR Code";
+  }
 });
-function downloadQRCode() {
-    // Get the QR code image element
-    const qrCodeImg = document.querySelector('.qr-code img');
-    
-    // Create a temporary anchor element
-    const link = document.createElement('a');
-    link.style.display = 'none';
-    
-    // Set the anchor element's href attribute to the QR code image's source
-    link.href = qrCodeImg.src;
-    
-    // Set the anchor element's download attribute to the desired file name
-    link.download = 'qrcode.png';
-    
-    // Add the anchor element to the page
-    document.body.appendChild(link);
-    
-    // Click the anchor element to trigger the download
-    link.click();
-    
-    document.body.removeChild(link);
-}
-const downloadBtn = document.querySelector('.download-btn');
-downloadBtn.addEventListener('click', downloadQRCode);
 
+download.addEventListener("click", () => {
+  if (!imageUrl) return;
+  const link = document.createElement("a");
+  link.href = imageUrl;
+  link.download = "qrcode.png";
+  link.click();
+});

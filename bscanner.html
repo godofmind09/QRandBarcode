@@ -16,6 +16,9 @@
         margin-top: 20px;
         max-width: 100%;
       }
+      #preview canvas {
+        display: none;
+      }
       button {
         margin-top: 20px;
         padding: 10px 20px;
@@ -36,11 +39,11 @@
   </head>
   <body>
     <h1>Barcode Scanner</h1>
-    <video id="preview"></video>
+    <div id="preview"></div>
     <br />
     <button id="startButton">Start scanning</button>
-    <div id="result"></div>
+    <div id="result" role="status"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
-    <script src="app.js"></script>
+    <script src="bsscript.js"></script>
   </body>
 </html>

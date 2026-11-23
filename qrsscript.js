@@ -1,49 +1,60 @@
-const wrapper = document.querySelector(".wrapper"),
-  form = document.querySelector("form"),
-  fileInp = form.querySelector("input"),
-  infoText = form.querySelector("p"),
-  closeBtn = document.querySelector(".close"),
-  copyBtn = document.querySelector(".copy");
+const wrapper = document.querySelector(".wrapper");
+const form = wrapper.querySelector("form");
+const fileInput = form.querySelector("input");
+const preview = form.querySelector("img");
+const status = form.querySelector("p");
+const result = wrapper.querySelector("textarea");
+const copy = wrapper.querySelector(".copy");
+const close = wrapper.querySelector(".close");
+const uploadPrompt = status.textContent;
+let scanning = false;
+let previewUrl;
 
-function fetchRequest(file, formData) {
-  infoText.innerText = "Scanning QR Code...";
-  fetch("http://api.qrserver.com/v1/read-qr-code/", {
-    method: "POST",
-    body: formData,
-  })
-    .then((res) => res.json())
-    .then((result) => {
-      const symbol = result[0].symbol[0];
-      const data = symbol.data;
-      const error = symbol.error;
-
-      if (error) {
-        infoText.innerText = `Couldn't scan QR Code: ${error}`;
-        return;
-      }
-
-      infoText.innerText = "Upload QR Code to Scan";
-      document.querySelector("textarea").innerText = data;
-      form.querySelector("img").src = URL.createObjectURL(file);
-      wrapper.classList.add("active");
-    })
-    .catch(() => {
-      infoText.innerText = "Couldn't scan QR Code";
-    });
+function clearPreview() {
+  wrapper.classList.remove("active");
+  preview.removeAttribute("src");
+  if (previewUrl) URL.revokeObjectURL(previewUrl);
+  previewUrl = undefined;
 }
 
-fileInp.addEventListener("change", async (e) => {
-  let file = e.target.files[0];
-  if (!file) return;
-  let formData = new FormData();
-  formData.append("file", file);
-  fetchRequest(file, formData);
+fileInput.addEventListener("change", async () => {
+  const file = fileInput.files[0];
+  fileInput.value = "";
+  if (!file || scanning) return;
+
+  clearPreview();
+  scanning = true;
+  status.textContent = "Scanning QR Code...";
+  try {
+    const body = new FormData();
+    body.append("file", file);
+    const response = await fetch("https://api.qrserver.com/v1/read-qr-code/", { method: "POST", body });
+    if (!response.ok) throw new Error("QR code service unavailable");
+    const data = await response.json();
+    const symbol = data?.[0]?.symbol?.[0];
+    if (symbol?.error || typeof symbol?.data !== "string") {
+      throw new Error("No QR code found");
+    }
+    result.value = symbol.data;
+    previewUrl = URL.createObjectURL(file);
+    preview.src = previewUrl;
+    wrapper.classList.add("active");
+    status.textContent = uploadPrompt;
+  } catch {
+    status.textContent = "Couldn't scan QR Code. Choose an image to try again.";
+  } finally {
+    scanning = false;
+  }
 });
 
-copyBtn.addEventListener("click", () => {
-  let text = document.querySelector("textarea").textContent;
-  navigator.clipboard.writeText(text);
+copy.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(result.value);
+  } catch {
+    result.select();
+  }
 });
-
-form.addEventListener("click", () => fileInp.click());
-closeBtn.addEventListener("click", () => wrapper.classList.remove("active"));
+form.addEventListener("click", (event) => {
+  if (event.target !== fileInput && !scanning) fileInput.click();
+});
+close.addEventListener("click", clearPreview);
